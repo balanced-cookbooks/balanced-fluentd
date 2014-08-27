@@ -1,0 +1,7 @@
+#http://docs.fluentd.org/articles/in_syslog
+<source>
+  type syslog
+  port <%= node['balanced-fluentd']['in_forward']['port'] %>
+  bind <%= node['balanced-fluentd']['in_forward']['bind'] %>
+  tag <%= node['balanced-fluentd']['in_forward']['tag'] %>
+</source>

@@ -1,0 +1,48 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+  attributes:
+    citadel:
+      access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+      secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+
+platforms:
+  - name: ubuntu-12.04
+
+suites:
+  - name: server
+    run_list:
+      - recipe[balanced-fluentd::server]
+      - recipe[balanced-fluentd]
+    attributes:
+      balanced-fluentd:
+        matches:
+         - [10, 'debug']
+         - [99, 'archive']
+        sources:
+         - [20, 'forwarding']
+         - [20, 'http']
+         - [20, 'syslog']
+    driver:
+      network:
+        - [private_network, {ip: 10.2.3.10}]
+        - [forwarded_port, {guest: 24224, host: 24224}]
+        - [forwarded_port, {guest: 8888, host: 8888}]
+
+  - name: client
+    run_list:
+      - recipe[balanced-fluentd::client]
+      - recipe[balanced-fluentd]
+    attributes:
+      balanced-fluentd:
+        matches:
+          - [10, 'debug']
+          - [99, 'forwarding']
+        sources:
+          - [20, 'http']
+          - [20, 'syslog']
+        in_forward:
+          servers: ['10.2.3.10']

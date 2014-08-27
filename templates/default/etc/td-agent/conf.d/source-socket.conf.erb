@@ -1,0 +1,7 @@
+
+## built-in UNIX socket input
+# http://docs.fluentd.org/articles/in_unix
+<source>
+  type unix
+  path <%= node['balanced-fluentd']['in_unix']['path'] %>
+</source>

@@ -1,0 +1,25 @@
+<match **>
+  type forward
+  send_timeout 60s
+  recover_wait 10s
+  heartbeat_interval 1s
+  phi_threshold 16
+  hard_timeout 60s
+
+  buffer_type memory
+  buffer_chunk_limit 256m
+  buffer_queue_limit 128
+
+  <% @in_forward['servers'].each do |server| %>
+  <server>
+    name <%= server %>
+    host <%= server %>
+    port <%= @in_forward['port'] %>
+  </server>
+  <% end %>
+
+  <secondary>
+    type file
+    path <%=@log_dir%>/forward-failed
+  </secondary>
+</match>
