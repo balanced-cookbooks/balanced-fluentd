@@ -1,0 +1,22 @@
+<store>
+  type s3
+
+  check_apikey_on_start false
+
+  <% if @AWS_ACCESS_KEY_ID %>
+  aws_key_id <%= @AWS_ACCESS_KEY_ID %>
+  <% end %>
+  <% if @AWS_SECRET_ACCESS_KEY %>
+  aws_sec_key <%= @AWS_SECRET_ACCESS_KEY %>
+  <% end %>
+
+  s3_bucket <%= @S3_BUCKET_NAME %>
+  s3_endpoint <%= @S3_ENDPOINT %>
+
+  path <%= @S3_PREFIX %>/
+  buffer_path <%= @node['balanced-fluentd']['log_dir'] %>/s3/<%= @S3_PREFIX %>
+
+  utc
+
+  time_slice_format %Y%m%d%H
+</store>

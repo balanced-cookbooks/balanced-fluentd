@@ -20,12 +20,46 @@ suites:
     attributes:
       balanced-fluentd:
         matches:
-         - [10, 'debug']
-         - [99, 'archive']
+          - [10, 'debug', {}]
+          - [49, 'copy', {
+            'pattern': 'balanced.**',
+            'name': 'balanced',
+            'stores': [
+              [
+                's3', {
+                  'AWS_ACCESS_KEY_ID': <%= ENV['AWS_ACCESS_KEY_ID'] %>,
+                  'AWS_SECRET_ACCESS_KEY': <%= ENV['AWS_SECRET_ACCESS_KEY'] %>,
+                  'S3_BUCKET_NAME': 'balanced-logs',
+                  'S3_ENDPOINT': <%= ENV['S3_ENDPOINT'] || 's3-us-west-1.amazonaws.com' %>,
+                  'S3_PREFIX': <%= ENV['S3_PREFIX'] || 'balanced' %>
+                }
+              ]
+              #['kafka', {}]
+            ]
+          }]
+          - [50, 'copy', {
+            'stores': [
+              ['file', {}],
+              [
+                's3', {
+                  'AWS_ACCESS_KEY_ID': <%= ENV['AWS_ACCESS_KEY_ID'] %>,
+                  'AWS_SECRET_ACCESS_KEY': <%= ENV['AWS_SECRET_ACCESS_KEY'] %>,
+                  'S3_BUCKET_NAME': 'balanced-logs',
+                  'S3_ENDPOINT': <%= ENV['S3_ENDPOINT'] || 's3-us-west-1.amazonaws.com' %>,
+                  'S3_PREFIX': <%= ENV['S3_PREFIX'] || 'fluentd' %>
+                }
+              ]
+#              ['kafka', {
+#                  'KAFKA_SERVERS': ['localhost:9200', 'localhost:9201'],
+#                  'KAFKA_TOPICS': ['*']
+#              }]
+            ]
+          }]
+          - [99, 'archive', {'log_dir': '/tmp'}]
         sources:
-         - [20, 'forwarding']
-         - [20, 'http']
-         - [20, 'syslog']
+          - [20, 'forwarding', {}]
+          - [20, 'http', {}]
+          - [20, 'syslog', {}]
     driver:
       network:
         - [private_network, {ip: 10.2.3.10}]
@@ -39,10 +73,10 @@ suites:
     attributes:
       balanced-fluentd:
         matches:
-          - [10, 'debug']
-          - [99, 'forwarding']
+#          - [10, 'debug', {}]
+          - [99, 'forwarding', {}]
         sources:
-          - [20, 'http']
-          - [20, 'syslog']
+          - [20, 'http', {}]
+          - [20, 'syslog', {}]
         in_forward:
           servers: ['10.2.3.10']

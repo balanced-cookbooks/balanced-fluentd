@@ -8,11 +8,13 @@ default['balanced-fluentd']['group'] = 'td-agent'
 default['balanced-fluentd']['config_dir'] = '/etc/td-agent/conf.d'
 default['balanced-fluentd']['log_dir'] = '/var/log/fluentd'
 
-default['balanced-fluentd']['sources'] = [[10, 'debug']]
-default['balanced-fluentd']['matches'] = [[10, 'debug']]
+# these default ones will log debug.* to stdout (/var/log/td-agent/td-agent.log)
+default['balanced-fluentd']['sources'] = [[10, 'debug', {}]]
+default['balanced-fluentd']['matches'] = [[10, 'debug', {}]]
 
 # should always match node['td_agent']['in_forward']['port']
 default['balanced-fluentd']['in_forward']['port'] = 24224
+default['balanced-fluentd']['in_forward']['bind'] = '0.0.0.0'
 # requests are forwarded to these servers
 default['balanced-fluentd']['in_forward']['servers'] = []
 
@@ -25,3 +27,6 @@ default['balanced-fluentd']['in_syslog']['tag'] = 'syslog'
 
 # path to socket if used
 default['balanced-fluentd']['in_unix']['path'] = nil
+
+default['balanced-fluentd']['in_udp']['port'] = 5160
+default['balanced-fluentd']['in_udp']['bind'] = '0.0.0.0'

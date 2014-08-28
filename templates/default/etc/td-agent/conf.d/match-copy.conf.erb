@@ -1,0 +1,7 @@
+# http://docs.fluentd.org/articles/out_file
+<match <%=@pattern || '**' %>>
+    type copy
+    <% @stores.each do |template, arguments| %>
+        <%= render "/etc/td-agent/conf.d/store-#{template}.conf.erb", :variables => @variables.update(arguments) %>
+    <% end %>
+</match>

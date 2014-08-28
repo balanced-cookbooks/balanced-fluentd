@@ -1,0 +1,9 @@
+# http://docs.fluentd.org/articles/in_udp
+<source>
+    type udp
+    port <%= node['balanced-fluentd']['in_udp']['port'] %>
+    bind <%= node['balanced-fluentd']['in_udp']['bind'] %>
+    format /^(?<field1>\d+):(?<field2>\w+)$/
+    delimiter \n
+    body_size_limit 1MB
+</source>
