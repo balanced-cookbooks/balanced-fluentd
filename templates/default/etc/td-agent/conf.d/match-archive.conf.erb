@@ -1,7 +1,5 @@
 # http://docs.fluentd.org/articles/out_file
-<match **>
-  type file
-  utc
-  #symlink_path
-  path <%=@log_dir%>/archive
+<match <%=@pattern || '**' %>>
+    type copy
+    <%= render "/etc/td-agent/conf.d/store-file.conf.erb", :option => {:variables => @variables } %>
 </match>

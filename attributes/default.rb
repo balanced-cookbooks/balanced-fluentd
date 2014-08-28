@@ -8,8 +8,8 @@ default['balanced-fluentd']['group'] = 'td-agent'
 default['balanced-fluentd']['config_dir'] = '/etc/td-agent/conf.d'
 default['balanced-fluentd']['log_dir'] = '/var/log/fluentd'
 
-default['balanced-fluentd']['sources'] = [[10, 'debug']]
-default['balanced-fluentd']['matches'] = [[10, 'debug']]
+default['balanced-fluentd']['sources'] = [[10, 'debug', {}]]
+default['balanced-fluentd']['matches'] = [[10, 'debug', {}]]
 
 # should always match node['td_agent']['in_forward']['port']
 default['balanced-fluentd']['in_forward']['port'] = 24224

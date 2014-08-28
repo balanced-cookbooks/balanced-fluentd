@@ -1,0 +1,16 @@
+<store>
+  type s3
+
+  aws_key_id <%= @AWS_ACCESS_KEY_ID %>
+  aws_sec_key <%= @AWS_SECRET_ACCESS_KEY %>
+  s3_bucket <%= @S3_BUCKET_NAME %>
+  s3_endpoint <%= @S3_ENDPOINT %>
+  path <%= @S3_PREFIX %>
+  buffer_path /var/log/fluentd/s3
+
+  time_slice_format %Y%m%d%H
+  time_slice_wait 10m
+  utc
+
+  buffer_chunk_limit 256m
+</store>
