@@ -7,13 +7,20 @@ directory node['balanced-fluentd']['log_dir'] do
 end
 
 # death to the infidels, they do not know how to clone a hash
-base_options = Hash[node['balanced-fluentd'].to_a]
+@base_options = Hash[node['balanced-fluentd'].to_a]
 
-node['balanced-fluentd']['sources'].each do |priority, source, options|
-  merged_options = base_options.clone
+def merge_options(options)
+  merged_options = @base_options.clone
+  merged_options['node'] = node
   merged_options.update(Hash[options.to_a])
   merged_options['variables'] = merged_options
-  template "#{node['balanced-fluentd']['config_dir']}/#{priority}-source-#{source}.conf" do
+  merged_options
+end
+
+node['balanced-fluentd']['sources'].each do |priority, source, options|
+  merged_options = merge_options(options)
+  name = merged_options.delete('name')
+  template "#{node['balanced-fluentd']['config_dir']}/#{priority}-source-#{name or source}.conf" do
     source "#{node['balanced-fluentd']['config_dir']}/source-#{source}.conf.erb"
     owner node['balanced-fluentd']['user']
     group node['balanced-fluentd']['group']
@@ -24,10 +31,9 @@ node['balanced-fluentd']['sources'].each do |priority, source, options|
 end
 
 node['balanced-fluentd']['matches'].each do |priority, match, options|
-  merged_options = base_options.clone
-  merged_options.update(Hash[options.to_a])
-  merged_options['variables'] = merged_options
-  template "#{node['balanced-fluentd']['config_dir']}/#{priority}-match-#{match}.conf" do
+  merged_options = merge_options(options)
+  name = merged_options.delete('name')
+  template "#{node['balanced-fluentd']['config_dir']}/#{priority}-match-#{name or match}.conf" do
     source "#{node['balanced-fluentd']['config_dir']}/match-#{match}.conf.erb"
     owner node['balanced-fluentd']['user']
     group node['balanced-fluentd']['group']

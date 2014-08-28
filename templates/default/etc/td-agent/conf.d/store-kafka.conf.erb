@@ -1,7 +1,7 @@
 <store>
   type                kafka
-  brokers             <broker1_host>:<broker1_ip>,<broker2_host>:<broker2_ip>,..
-  default_topic       <output topic>
+  brokers             <%= @KAFKA_SERVERS.join(',') %>
+  default_topic       <%= @KAFKA_TOPICS.join(',') %>
   output_data_type    json
   output_include_tag  true
   output_include_time true

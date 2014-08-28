@@ -21,6 +21,22 @@ suites:
       balanced-fluentd:
         matches:
           - [10, 'debug', {}]
+          - [49, 'copy', {
+            'pattern': 'balanced.**',
+            'name': 'balanced',
+            'stores': [
+              [
+                's3', {
+                  'AWS_ACCESS_KEY_ID': <%= ENV['AWS_ACCESS_KEY_ID'] %>,
+                  'AWS_SECRET_ACCESS_KEY': <%= ENV['AWS_SECRET_ACCESS_KEY'] %>,
+                  'S3_BUCKET_NAME': 'balanced-logs',
+                  'S3_ENDPOINT': <%= ENV['S3_ENDPOINT'] || 's3-us-west-1.amazonaws.com' %>,
+                  'S3_PREFIX': <%= ENV['S3_PREFIX'] || 'balanced' %>
+                }
+              ]
+              #['kafka', {}]
+            ]
+          }]
           - [50, 'copy', {
             'stores': [
               ['file', {}],
@@ -28,12 +44,15 @@ suites:
                 's3', {
                   'AWS_ACCESS_KEY_ID': <%= ENV['AWS_ACCESS_KEY_ID'] %>,
                   'AWS_SECRET_ACCESS_KEY': <%= ENV['AWS_SECRET_ACCESS_KEY'] %>,
-                  'S3_BUCKET_NAME': <%= ENV['S3_BUCKET_NAME'] || 'balanced-logs' %>,
+                  'S3_BUCKET_NAME': 'balanced-logs',
                   'S3_ENDPOINT': <%= ENV['S3_ENDPOINT'] || 's3-us-west-1.amazonaws.com' %>,
                   'S3_PREFIX': <%= ENV['S3_PREFIX'] || 'fluentd' %>
                 }
-              ],
-              ['kafka', {}]
+              ]
+#              ['kafka', {
+#                  'KAFKA_SERVERS': ['localhost:9200', 'localhost:9201'],
+#                  'KAFKA_TOPICS': ['*']
+#              }]
             ]
           }]
           - [99, 'archive', {'log_dir': '/tmp'}]
@@ -54,7 +73,7 @@ suites:
     attributes:
       balanced-fluentd:
         matches:
-          - [10, 'debug', {}]
+#          - [10, 'debug', {}]
           - [99, 'forwarding', {}]
         sources:
           - [20, 'http', {}]
