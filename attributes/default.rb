@@ -31,3 +31,5 @@ default['balanced-fluentd']['in_unix']['path'] = nil
 
 default['balanced-fluentd']['in_udp']['port'] = 5160
 default['balanced-fluentd']['in_udp']['bind'] = '0.0.0.0'
+
+default['balanced-fluentd']['in_tail']['files'] = []

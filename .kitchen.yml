@@ -19,11 +19,12 @@ suites:
       - recipe[balanced-fluentd]
     attributes:
       balanced-fluentd:
-        services:
-          - balanced
-          - precog
-          - knox
+#        services:
+#          - balanced
+#          - precog
+#          - knox
         matches:
+          - [1, 'reformer', {}]
           - [10, 'debug', {}]
           - [99, 'archive', {'log_dir': '/tmp'}]
         sources:
@@ -40,14 +41,19 @@ suites:
     run_list:
       - recipe[balanced-fluentd::client]
       - recipe[balanced-fluentd]
+      - recipe[balanced-fluentd_test::client]
       - recipe[balanced-fluentd_test]
     attributes:
       balanced-fluentd:
         matches:
-          - [10, 'debug', {}]
+#          - [10, 'debug', {}]
           - [99, 'forwarding', {}]
         sources:
           - [20, 'socket', {}]
+        in_tail:
+          files:
+            - {'name': 'balanced.log', 'path': '/var/log/balanced.log', 'format': 'json'}
+            - {'name': 'td-agent.log', 'path': '/var/log/td-agent/td-agent.log', 'format': '/^(?<line>.*)$/', 'tag': 'debug.td_agent_client'}
         in_unix:
           path: /var/run/fluentd/fluentd.sock
         in_forward:

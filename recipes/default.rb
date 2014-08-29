@@ -76,3 +76,14 @@ node['balanced-fluentd']['services'].each do |name|
     notifies :restart, resources(:service => 'td-agent')
   end
 end
+
+node['balanced-fluentd']['in_tail']['files'].each do |file_to_tail|
+  template "#{node['balanced-fluentd']['config_dir']}/30-source-#{file_to_tail.name}.conf" do
+    source "#{node['balanced-fluentd']['config_dir']}/source-tail.conf.erb"
+    owner node['balanced-fluentd']['user']
+    group node['balanced-fluentd']['group']
+    variables file_to_tail
+
+    notifies :restart, resources(:service => 'td-agent')
+  end
+end

@@ -1,5 +1,7 @@
 include_recipe 'balanced-fluentd'
 
-gem_package 'fluent-plugin-kafka' do
-  gem_binary '/usr/lib/fluent/ruby/bin/gem'
+%w(fluent-plugin-record-reformer fluent-plugin-kafka).each do |gem|
+  gem_package gem do
+    gem_binary '/usr/lib/fluent/ruby/bin/gem'
+  end
 end

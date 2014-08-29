@@ -7,7 +7,7 @@ DEPENDENCIES
 
 GRAPH
   apt (2.5.3)
-  balanced-fluentd (1.0.6)
+  balanced-fluentd (1.0.8)
     td-agent (~> 0.0.1)
   balanced-fluentd_test (0.0.0)
   td-agent (0.0.1)

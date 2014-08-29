@@ -1,0 +1,9 @@
+<source>
+  type tail
+  path <%= @path %>
+  <% if @name %>
+  pos_file <%= node['balanced-fluentd']['log_dir'] %>/<%= @name %>.pos
+  <% end %>
+  tag <%= @tag || 'debug.flog' %>
+  format <%= @format || 'json' %>
+</source>
