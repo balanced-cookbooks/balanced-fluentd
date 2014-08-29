@@ -11,7 +11,7 @@
   <% end %>
 
   s3_bucket <%= @S3_BUCKET_NAME %>
-  s3_endpoint <%= @S3_ENDPOINT %>
+  s3_endpoint <%= @S3_ENDPOINT or 's3-us-west-1.amazonaws.com' %>
 
   path <%= @S3_PREFIX %>/
   buffer_path <%= @node['balanced-fluentd']['log_dir'] %>/s3/<%= @S3_PREFIX %>

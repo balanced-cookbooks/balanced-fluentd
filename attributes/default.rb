@@ -11,6 +11,7 @@ default['balanced-fluentd']['log_dir'] = '/var/log/fluentd'
 # these default ones will log debug.* to stdout (/var/log/td-agent/td-agent.log)
 default['balanced-fluentd']['sources'] = [[10, 'debug', {}]]
 default['balanced-fluentd']['matches'] = [[10, 'debug', {}]]
+default['balanced-fluentd']['services'] = []
 
 # should always match node['td_agent']['in_forward']['port']
 default['balanced-fluentd']['in_forward']['port'] = 24224

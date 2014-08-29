@@ -42,3 +42,28 @@ node['balanced-fluentd']['matches'].each do |priority, match, options|
     notifies :restart, resources(:service => 'td-agent')
   end
 end
+
+node['balanced-fluentd']['services'].each do |name|
+  options = merge_options({})
+  options[:pattern] = "#{name}.**"
+  options[:stores] = [
+      [
+          's3',
+          {
+              :AWS_ACCESS_KEY_ID => ENV['AWS_ACCESS_KEY_ID'],
+              :AWS_SECRET_ACCESS_KEY => ENV['AWS_SECRET_ACCESS_KEY'],
+              :S3_BUCKET_NAME => 'balanced-logs',
+              :S3_ENDPOINT => 's3-us-west-1.amazonaws.com',
+              :S3_PREFIX => name
+          }
+      ]
+  ]
+  template "#{node['balanced-fluentd']['config_dir']}/30-match-#{name}.conf" do
+    source "#{node['balanced-fluentd']['config_dir']}/match-copy.conf.erb"
+    owner node['balanced-fluentd']['user']
+    group node['balanced-fluentd']['group']
+    variables options
+
+    notifies :restart, resources(:service => 'td-agent')
+  end
+end
