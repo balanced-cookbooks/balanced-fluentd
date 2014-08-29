@@ -34,3 +34,17 @@ default['balanced-fluentd']['in_udp']['port'] = 5160
 default['balanced-fluentd']['in_udp']['bind'] = '0.0.0.0'
 
 default['balanced-fluentd']['in_tail']['files'] = []
+
+default['balanced-fluentd']['tail_transforms']['balanced-nginx-access'] = <<-'EOH'.gsub(/\s+/, ' ').strip
+  /(?<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})
+  -
+  (?:(?<user>.+)|-)
+  \[(?<timestamp>\d{2}\/\w{3}\/\d{4}:\d{2}:\d{2}:\d{2}\s+\+\d{4})\]
+  "(?:(?<method>\w+)\s+(?<uri>.+)\s+HTTP\/(?<version>\d\.\d)|-)"
+  (?:(?<status>\d+)|-)
+  (?:(?<bytes_sent>\d+)|-)
+  "(?:(?<referrer>.*?)|-)"
+  "(?<user_agent>.*?)"
+  (?<request_time>\d+\.\d+)?
+  (?:(?:"guru[-_]id=(?:(?<guru_id>.+?)|-)"|"marketplace[-_]id=(?:(?<marketplace_id>.+?)|-)"|"merchant[-_]id=(?:(?<merchant_id>.+?)|-)"|"\w+=.+?"))*/
+EOH

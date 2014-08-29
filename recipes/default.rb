@@ -78,11 +78,15 @@ node['balanced-fluentd']['services'].each do |name|
 end
 
 node['balanced-fluentd']['in_tail']['files'].each do |file_to_tail|
+  options = Hash[file_to_tail.to_a]
+  # some tail_transforms is a collection of friendly names to patterns. use
+  # this so we do not need to cart regexs all around the show.
+  options['format'] = node['balanced-fluentd']['tail_transforms'][options['format']] || options['format']
   template "#{node['balanced-fluentd']['config_dir']}/30-source-#{file_to_tail.name}.conf" do
     source "#{node['balanced-fluentd']['config_dir']}/source-tail.conf.erb"
     owner node['balanced-fluentd']['user']
     group node['balanced-fluentd']['group']
-    variables file_to_tail
+    variables options
 
     notifies :restart, resources(:service => 'td-agent')
   end
