@@ -6,6 +6,15 @@ directory node['balanced-fluentd']['log_dir'] do
   mode '0775'
 end
 
+if node['balanced-fluentd']['in_unix']['path']
+  directory File.dirname(node['balanced-fluentd']['in_unix']['path']) do
+    owner node['balanced-fluentd']['user']
+    group node['balanced-fluentd']['group']
+    mode '0775'
+  end
+end
+
+
 # death to the infidels, they do not know how to clone a hash
 @base_options = Hash[node['balanced-fluentd'].to_a]
 

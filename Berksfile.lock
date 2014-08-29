@@ -2,11 +2,14 @@ DEPENDENCIES
   balanced-fluentd
     path: .
     metadata: true
+  balanced-fluentd_test
+    path: test/cookbooks/balanced-fluentd_test
 
 GRAPH
   apt (2.5.3)
-  balanced-fluentd (1.0.4)
+  balanced-fluentd (1.0.6)
     td-agent (~> 0.0.1)
+  balanced-fluentd_test (0.0.0)
   td-agent (0.0.1)
     apt (>= 0.0.0)
     yum (>= 0.0.0)

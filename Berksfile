@@ -3,8 +3,6 @@ source 'https://berks.vandelay.io/'
 
 metadata
 
-
 group :test do
-#    cookbook 'balanced-bob_test', path: 'test/cookbooks/balanced-bob_test'
+    cookbook 'balanced-fluentd_test', path: 'test/cookbooks/balanced-fluentd_test'
 end
-

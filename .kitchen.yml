@@ -25,24 +25,6 @@ suites:
           - knox
         matches:
           - [10, 'debug', {}]
-          - [50, 'copy', {
-            'stores': [
-              ['file', {}],
-              [
-                's3', {
-                  'AWS_ACCESS_KEY_ID': <%= ENV['AWS_ACCESS_KEY_ID'] %>,
-                  'AWS_SECRET_ACCESS_KEY': <%= ENV['AWS_SECRET_ACCESS_KEY'] %>,
-                  'S3_BUCKET_NAME': 'balanced-logs',
-                  'S3_ENDPOINT': <%= ENV['S3_ENDPOINT'] || 's3-us-west-1.amazonaws.com' %>,
-                  'S3_PREFIX': <%= ENV['S3_PREFIX'] || 'fluentd' %>
-                }
-              ]
-#              ['kafka', {
-#                  'KAFKA_SERVERS': ['localhost:9200', 'localhost:9201'],
-#                  'KAFKA_TOPICS': ['*']
-#              }]
-            ]
-          }]
           - [99, 'archive', {'log_dir': '/tmp'}]
         sources:
           - [20, 'forwarding', {}]
@@ -58,13 +40,15 @@ suites:
     run_list:
       - recipe[balanced-fluentd::client]
       - recipe[balanced-fluentd]
+      - recipe[balanced-fluentd_test]
     attributes:
       balanced-fluentd:
         matches:
-#          - [10, 'debug', {}]
+          - [10, 'debug', {}]
           - [99, 'forwarding', {}]
         sources:
-          - [20, 'http', {}]
-          - [20, 'syslog', {}]
+          - [20, 'socket', {}]
+        in_unix:
+          path: /var/run/fluentd/fluentd.sock
         in_forward:
           servers: ['10.2.3.10']
