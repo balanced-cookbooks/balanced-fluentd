@@ -16,6 +16,16 @@ file '/var/log/nginx/access.log' do
   mode '0777'
 end
 
+file '/var/log/nginx/error.log' do
+  content <<-EOH
+2014/08/29 07:55:05 [error] 9401#0: *27279 connect() failed (111: Connection refused) while connecting to upstream, client: 10.3.114.50, server: , request: "GET /health HTTP/1.1", upstream: "http://0.0.0.0:6543/health", host: "10.3.108.169"
+2014/08/29 11:15:05 [error] 9401#0: *27883 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 10.3.114.50, server: , request: "GET /health HTTP/1.1", upstream: "http://0.0.0.0:6543/health", host: "10.3.108.169"
+2014/08/29 12:26:05 [error] 9401#0: *28034 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 10.3.114.50, server: , request: "GET /health HTTP/1.1", upstream: "http://0.0.0.0:6543/health", host: "10.3.108.169"
+2014/08/29 16:23:35 [error] 9401#0: *28789 connect() failed (111: Connection refused) while connecting to upstream, client: 10.3.114.50, server: , request: "GET /health HTTP/1.1", upstream: "http://0.0.0.0:6543/health", host: "10.3.108.169"
+  EOH
+  mode '0777'
+end
+
 %w(fluent-plugin-record-reformer).each do |gem|
   gem_package gem do
     gem_binary '/usr/lib/fluent/ruby/bin/gem'

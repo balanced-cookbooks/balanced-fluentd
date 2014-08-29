@@ -48,3 +48,5 @@ default['balanced-fluentd']['tail_transforms']['balanced-nginx-access'] = <<-'EO
   (?<request_time>\d+\.\d+)?
   (?:(?:"guru[-_]id=(?:(?<guru_id>.+?)|-)"|"marketplace[-_]id=(?:(?<marketplace_id>.+?)|-)"|"merchant[-_]id=(?:(?<merchant_id>.+?)|-)"|"\w+=.+?"))*/
 EOH
+
+default['balanced-fluentd']['tail_transforms']['nginx-error'] = '/^(?<time>[^ ]+ [^ ]+) \[(?<log_level>.*)\] (?<pid>\d*).(?<tid>[^:]*): (?<message>.*)$/'

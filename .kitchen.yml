@@ -55,6 +55,7 @@ suites:
             - {'name': 'balanced.log', 'path': '/var/log/balanced.log', 'format': 'json'}
             - {'name': 'td-agent.log', 'path': '/var/log/td-agent/td-agent.log', 'format': '/^(?<line>.*)$/', 'tag': 'debug.td_agent_client'}
             - {'name': 'balanced.nginx.access', 'path': '/var/log/nginx/access.log', 'format': 'balanced-nginx-access', tag: 'debug.nginx.access'}
+            - {'name': 'balanced.nginx.error', 'path': '/var/log/nginx/error.log', 'format': 'nginx-error', tag: 'debug.nginx.error'}
         in_unix:
           path: /var/run/fluentd/fluentd.sock
         in_forward:
