@@ -35,7 +35,20 @@ default['balanced-fluentd']['in_udp']['bind'] = '0.0.0.0'
 
 default['balanced-fluentd']['in_tail']['files'] = []
 
-default['balanced-fluentd']['tail_transforms']['balanced-nginx-access'] = <<-'EOH'.gsub(/\s+/, ' ').strip
+# these keys (and for any other services) should take the following form:
+# [namespace]-[classification]-[application-name]-[specialization1]-[specialization...n]
+# the namespace for balanced is "b".
+# e.g.
+# b-access-nginx
+# b-access-gunicorn
+# b-error-nginx
+# b-error-nginx-balanced
+# b-access-nginx
+# b-*-nginx-*
+# b-error-nginx-balanced
+# b-access-gunicorn-justitia
+
+default['balanced-fluentd']['tail_transforms']['b-access-nginx'] = <<-'EOH'.gsub(/\s+/, ' ').strip
   /(?<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})
   -
   (?:(?<user>.+)|-)
@@ -49,4 +62,5 @@ default['balanced-fluentd']['tail_transforms']['balanced-nginx-access'] = <<-'EO
   (?:(?:"guru[-_]id=(?:(?<guru_id>.+?)|-)"|"marketplace[-_]id=(?:(?<marketplace_id>.+?)|-)"|"merchant[-_]id=(?:(?<merchant_id>.+?)|-)"|"\w+=.+?"))*/
 EOH
 
+# this is not specific to our organisation so we do not prefix it with anything
 default['balanced-fluentd']['tail_transforms']['nginx-error'] = '/^(?<time>[^ ]+ [^ ]+) \[(?<log_level>.*)\] (?<pid>\d*).(?<tid>[^:]*): (?<message>.*)$/'
