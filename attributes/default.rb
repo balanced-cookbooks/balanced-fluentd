@@ -7,6 +7,7 @@ default['balanced-fluentd']['owner'] = 'td-agent'
 default['balanced-fluentd']['group'] = 'td-agent'
 default['balanced-fluentd']['config_dir'] = '/etc/td-agent/conf.d'
 default['balanced-fluentd']['log_dir'] = '/var/log/fluentd'
+default['balanced-fluentd']['pid_file'] = '/var/run/td-agent/td-agent.pid'
 
 # these default ones will log debug.* to stdout (/var/log/td-agent/td-agent.log)
 default['balanced-fluentd']['sources'] = [[10, 'debug', {}]]

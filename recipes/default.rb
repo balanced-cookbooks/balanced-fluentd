@@ -1,4 +1,5 @@
 include_recipe 'td-agent'
+include_recipe 'balanced-fluentd::_monit'
 
 directory node['balanced-fluentd']['log_dir'] do
   owner node['balanced-fluentd']['user']
@@ -13,7 +14,6 @@ if node['balanced-fluentd']['in_unix']['path']
     mode '0775'
   end
 end
-
 
 # death to the infidels, they do not know how to clone a hash
 @base_options = Hash[node['balanced-fluentd'].to_a]

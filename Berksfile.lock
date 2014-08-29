@@ -7,9 +7,13 @@ DEPENDENCIES
 
 GRAPH
   apt (2.5.3)
-  balanced-fluentd (1.0.8)
+  balanced-fluentd (1.0.10)
+    balanced-monit (~> 1.0.0)
     td-agent (~> 0.0.1)
   balanced-fluentd_test (0.0.0)
+  balanced-monit (1.0.1)
+    monit (~> 1.3)
+  monit (1.3.3)
   td-agent (0.0.1)
     apt (>= 0.0.0)
     yum (>= 0.0.0)
